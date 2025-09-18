@@ -11,54 +11,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
   {% include "header.njk" %}
   {{ content | safe }}
   {% include "footer.njk" %}
-  
-  <script>
-    // Handle Netlify Identity invitation flow
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    } else {
-      document.addEventListener("DOMContentLoaded", function() {
-        if (window.netlifyIdentity) {
-          window.netlifyIdentity.on("init", user => {
-            if (!user) {
-              window.netlifyIdentity.on("login", () => {
-                document.location.href = "/admin/";
-              });
-            }
-          });
-        }
-      });
-    }
-
-    // Handle invitation token in URL
-    if (window.location.hash) {
-      // Wait for netlify identity to load
-      const checkForIdentity = () => {
-        if (window.netlifyIdentity) {
-          window.netlifyIdentity.on("init", user => {
-            if (user) {
-              // User is logged in, redirect to admin
-              window.location.href = "/admin/";
-            }
-          });
-        } else {
-          setTimeout(checkForIdentity, 100);
-        }
-      };
-      checkForIdentity();
-    }
-  </script>
 </body>
 </html>
