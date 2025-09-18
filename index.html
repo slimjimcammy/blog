@@ -27,8 +27,3 @@ cssFile: "pages/home.css"
     </div>
   </main>
 </div>
-
-{% set pageType = page.url | replace("/", "") | replace("/", "-") |
-default("home") %} {% for stylesheet in css[pageType] %}
-<link rel="stylesheet" href="/assets/css/{{ stylesheet }}" />
-{% endfor %}

@@ -17,5 +17,52 @@
   {% include "header.njk" %}
   {{ content | safe }}
   {% include "footer.njk" %}
+  
+  <script>
+    // Handle Netlify Identity invitation flow
+    document.addEventListener("DOMContentLoaded", function() {
+      // Check if there's an invitation token in the URL
+      if (window.location.hash && window.location.hash.includes('invite_token')) {
+        console.log('Invitation token detected:', window.location.hash);
+        
+        // Wait for Netlify Identity to load
+        const handleInvitation = () => {
+          if (window.netlifyIdentity) {
+            console.log('Netlify Identity loaded, processing invitation...');
+            
+            // Listen for successful login
+            window.netlifyIdentity.on("login", () => {
+              console.log('User logged in successfully, redirecting to admin...');
+              window.location.href = "/admin/";
+            });
+            
+            // Listen for errors
+            window.netlifyIdentity.on("error", (err) => {
+              console.error('Netlify Identity error:', err);
+            });
+            
+            // The invitation should be processed automatically by Netlify Identity
+            // when the page loads with the token in the URL
+          } else {
+            // Retry after a short delay
+            setTimeout(handleInvitation, 100);
+          }
+        };
+        
+        handleInvitation();
+      } else {
+        // Normal login flow
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.on("init", user => {
+            if (!user) {
+              window.netlifyIdentity.on("login", () => {
+                document.location.href = "/admin/";
+              });
+            }
+          });
+        }
+      }
+    });
+  </script>
 </body>
 </html>
