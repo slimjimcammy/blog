@@ -19,6 +19,7 @@
   {% include "footer.njk" %}
   
   <script>
+    // Handle Netlify Identity invitation flow
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on("init", user => {
         if (!user) {
@@ -27,6 +28,36 @@
           });
         }
       });
+    } else {
+      document.addEventListener("DOMContentLoaded", function() {
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.on("init", user => {
+            if (!user) {
+              window.netlifyIdentity.on("login", () => {
+                document.location.href = "/admin/";
+              });
+            }
+          });
+        }
+      });
+    }
+
+    // Handle invitation token in URL
+    if (window.location.hash) {
+      // Wait for netlify identity to load
+      const checkForIdentity = () => {
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.on("init", user => {
+            if (user) {
+              // User is logged in, redirect to admin
+              window.location.href = "/admin/";
+            }
+          });
+        } else {
+          setTimeout(checkForIdentity, 100);
+        }
+      };
+      checkForIdentity();
     }
   </script>
 </body>
