@@ -1,17 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="/assets/css/style.css" />
-    {% if cssFile %}
-    <link rel="stylesheet" href="/assets/css/{{ cssFile }}" />
-    {% endif %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Content Manager</title>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
-    {% include "header.njk" %} {{ content | safe }} {% include "footer.njk" %}
-
+    <!-- Include the script that builds the page and powers Decap CMS -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     <script>
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", (user) => {
